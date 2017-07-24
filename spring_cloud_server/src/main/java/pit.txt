@@ -1,0 +1,1 @@
+peer1 peer2 要在在操作系统中配置 hosts  127.0.0.1 peer1 127.0.0.1 peer2

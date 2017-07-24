@@ -12,5 +12,6 @@
   	<module>spring_cloud_ribbon</module>
     <module>spring_cloud_config</module>
     <module>spring_cloud_zuul</module>
+    <module>spring_cloud_ribbon_radis</module>
   </modules>
 </project>

@@ -13,9 +13,7 @@ import org.springframework.context.annotation.Profile;
 @SpringBootApplication
 public class Application {
 	public static void main(String[] args) {
-		System.out.println("--注册中心--");
 		new SpringApplicationBuilder(Application.class).web(true).run(args);
-		System.out.println("--注册中心--");
 	}
 
 }
