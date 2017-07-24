@@ -1,0 +1,6 @@
+/.settings
+/spring_cloud_zuul/target/*
+/spring_cloud_server/target/*
+/spring_cloud_ribbon/target/*
+/spring_cloud_netflix/target/*
+/spring_cloud_config/target/*
