@@ -13,5 +13,6 @@
     <module>spring_cloud_config</module>
     <module>spring_cloud_zuul</module>
     <module>spring_cloud_ribbon_radis</module>
+    <module>spring_cloud_ribbon_rabbitmq</module>
   </modules>
 </project>
