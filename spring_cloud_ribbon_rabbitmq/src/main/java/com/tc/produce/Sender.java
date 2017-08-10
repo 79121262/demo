@@ -13,6 +13,7 @@ public class Sender {
     public void send() {
         String context = "hello " + new Date();
         System.out.println("Sender : " + context);
-        this.rabbitTemplate.convertAndSend("refundcenter.refunddetails.sync", context);
+        //this.rabbitTemplate.convertAndSend("tc-queues", context); //发送到默认 exchange
+        this.rabbitTemplate.convertAndSend("test-exchange","test-routingkey", context);
     }
 }

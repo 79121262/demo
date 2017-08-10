@@ -5,7 +5,7 @@ import org.springframework.amqp.rabbit.annotation.RabbitListener;
 import org.springframework.stereotype.Component;
 
 @Component
-@RabbitListener(queues = "refundcenter.refunddetails.sync")
+@RabbitListener(queues = "tc-queues")
 public class Receiver {
     @RabbitHandler
     public void process(String hello) {
