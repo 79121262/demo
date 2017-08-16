@@ -46,7 +46,7 @@ public class RabbitConfig {
     }
 	
 	/**
-	 * 创建队列
+	 * 创建队列 生产者和消费者都可以创建
 	 * @return
 	 */
     @Bean
@@ -55,7 +55,7 @@ public class RabbitConfig {
     }
     
     /**
-	 * 创建队列
+	 * 创建队列 生产者和消费者都可以创建
 	 * @return
 	 */
     @Bean
@@ -64,7 +64,7 @@ public class RabbitConfig {
     }
     
     /**
-	 * 创建exchange
+	 * 创建exchange 生产者和消费者都可以创建
 	 * @return
 	 */
     @Bean
