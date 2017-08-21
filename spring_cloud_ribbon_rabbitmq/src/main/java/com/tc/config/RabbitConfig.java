@@ -1,6 +1,7 @@
 package com.tc.config;
 
 
+import org.springframework.amqp.core.AcknowledgeMode;
 import org.springframework.amqp.core.Binding;
 import org.springframework.amqp.core.BindingBuilder;
 import org.springframework.amqp.core.Queue;
@@ -9,6 +10,7 @@ import org.springframework.amqp.rabbit.config.SimpleRabbitListenerContainerFacto
 import org.springframework.amqp.rabbit.connection.CachingConnectionFactory;
 import org.springframework.amqp.rabbit.connection.ConnectionFactory;
 import org.springframework.amqp.rabbit.core.RabbitTemplate;
+import org.springframework.amqp.rabbit.listener.SimpleMessageListenerContainer;
 import org.springframework.amqp.support.converter.Jackson2JsonMessageConverter;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.beans.factory.config.ConfigurableBeanFactory;
@@ -17,11 +19,17 @@ import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.context.annotation.Scope;
 
+import com.tc.consume.TransactionConsumeImpl;
+
 
 
 @Configuration
 public class RabbitConfig {
 	
+	/**
+	 * 生成者消费者公用
+	 * @return
+	 */
 	@Bean  
     public ConnectionFactory connectionFactory() {  
         CachingConnectionFactory connectionFactory = new CachingConnectionFactory();  
@@ -31,6 +39,7 @@ public class RabbitConfig {
         connectionFactory.setPassword("tc123456");  
         connectionFactory.setVirtualHost("/tc");  
         connectionFactory.setPublisherConfirms(true); //必须要设置  
+        
         return connectionFactory;  
     }
 	
@@ -40,6 +49,8 @@ public class RabbitConfig {
     @Scope(ConfigurableBeanFactory.SCOPE_PROTOTYPE)  
     public RabbitTemplate rabbitTemplate1() {  
         RabbitTemplate template = new RabbitTemplate(connectionFactory());  
+        //开启事物
+        //template.setChannelTransacted(true);
         //注册转换器
         template.setMessageConverter(new Jackson2JsonMessageConverter());
         return template;  
@@ -51,7 +62,8 @@ public class RabbitConfig {
 	 */
     @Bean
     public Queue helloQueue() {
-        return new Queue("tc-queues");
+        Queue queue = new Queue("tc-queues");
+        return queue;
     }
     
     /**
@@ -119,7 +131,6 @@ public class RabbitConfig {
         factory.setAutoStartup(listenerConfig.isAutoStartup());
         //注册转换器
         factory.setMessageConverter(new Jackson2JsonMessageConverter());
-        
         if (listenerConfig.getAcknowledgeMode() != null) {
             factory.setAcknowledgeMode(listenerConfig.getAcknowledgeMode());
         }
@@ -135,9 +146,24 @@ public class RabbitConfig {
         if (listenerConfig.getTransactionSize() != null) {
             factory.setTxSize(listenerConfig.getTransactionSize());
         }
+        //手工确认
+        //factory.setAcknowledgeMode(AcknowledgeMode.MANUAL);
+        //factory.   
         return factory;
     }
-
-
+    
+    //支持手动确认的 listener
+    @Bean
+    public SimpleMessageListenerContainer messageContainer1(Queue helloQueue,ConnectionFactory connectionFactory, TransactionConsumeImpl receiver) {
+        SimpleMessageListenerContainer container = new SimpleMessageListenerContainer(connectionFactory);
+        container.setQueues(helloQueue);
+        container.setExposeListenerChannel(true);
+        container.setMaxConcurrentConsumers(1);
+        container.setConcurrentConsumers(1);
+        container.setAcknowledgeMode(AcknowledgeMode.MANUAL); //设置确认模式手工确认
+        container.setMessageListener(receiver);
+        return container;
+    }
+    
     
 }
