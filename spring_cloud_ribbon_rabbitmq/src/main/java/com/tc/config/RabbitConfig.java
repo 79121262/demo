@@ -25,7 +25,6 @@ import com.tc.consume.TransactionConsumeImpl;
 
 @Configuration
 public class RabbitConfig {
-	
 	/**
 	 * 生成者消费者公用
 	 * @return
@@ -38,8 +37,7 @@ public class RabbitConfig {
         connectionFactory.setUsername("tc");  
         connectionFactory.setPassword("tc123456");  
         connectionFactory.setVirtualHost("/tc");  
-        connectionFactory.setPublisherConfirms(true); //必须要设置  
-        
+        //connectionFactory.setPublisherConfirms(true); //必须要设置  开启应答 和事物冲突
         return connectionFactory;  
     }
 	
@@ -49,7 +47,7 @@ public class RabbitConfig {
     @Scope(ConfigurableBeanFactory.SCOPE_PROTOTYPE)  
     public RabbitTemplate rabbitTemplate1() {  
         RabbitTemplate template = new RabbitTemplate(connectionFactory());  
-        //开启事物
+        //开启外部事物spring管理
         //template.setChannelTransacted(true);
         //注册转换器
         template.setMessageConverter(new Jackson2JsonMessageConverter());
@@ -146,9 +144,6 @@ public class RabbitConfig {
         if (listenerConfig.getTransactionSize() != null) {
             factory.setTxSize(listenerConfig.getTransactionSize());
         }
-        //手工确认
-        //factory.setAcknowledgeMode(AcknowledgeMode.MANUAL);
-        //factory.   
         return factory;
     }
     

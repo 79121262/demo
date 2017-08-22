@@ -8,9 +8,7 @@ import org.springframework.stereotype.Component;
 @RabbitListener(queues = "tc-queues1",containerFactory = "uContainerFactory")
 public class Receiver1 {
     @RabbitHandler
-    public void process(String hello) {
+    public void process(Object hello) {
         System.out.println("Receiver1 : " + hello);
     }
-    
-    
 }

@@ -14,7 +14,7 @@ public class ComputeController {
     private Sender sender;
 	@ResponseBody
 	@RequestMapping(value = "/add", method = RequestMethod.GET)
-	public String add() {
+	public String add() throws Exception {
 		sender.send();
 		return "vdsa";
 	}
