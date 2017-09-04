@@ -38,6 +38,8 @@ public class RedisConfig {
     @Bean  
     public RedisTemplate<?, ?> getRedisTemplate(){  
         RedisTemplate<?,?> template = new StringRedisTemplate(getConnectionFactory());  
+        //开启事物支持
+        template.setEnableTransactionSupport(true);
         return template;  
     }  
 }  

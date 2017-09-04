@@ -50,7 +50,7 @@ public class RedisServiceImpl implements IRedisService{
     }  
   
        
-    public boolean expire(final String key, long expire) {  
+    public boolean expire(final String key, long expire) {
         return redisTemplate.expire(key, expire, TimeUnit.SECONDS);  
     }  
   
